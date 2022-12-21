@@ -16,3 +16,8 @@ class DatabaseScripts {
       REFERENCES folder (id)
   ); """;
 }
+
+class TableNames {
+  static const String folderTable = "folder";
+  static const String cardTable = "card";
+}

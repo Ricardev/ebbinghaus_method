@@ -1,7 +1,9 @@
+import 'package:ebbinghaus_method/core/dependency_injection.dart';
 import 'package:ebbinghaus_method/features/home/presentation/pages/folders_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  setup();
   runApp(const MyApp());
 }
 

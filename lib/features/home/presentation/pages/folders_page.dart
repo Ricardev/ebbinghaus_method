@@ -1,4 +1,6 @@
-import 'package:ebbinghaus_method/cubits/folders_page_cubit.dart';
+import 'package:ebbinghaus_method/core/dependency_injection.dart';
+import 'package:ebbinghaus_method/cubits/home_cubit.dart';
+import 'package:ebbinghaus_method/features/home/presentation/states/folders_page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,14 +10,25 @@ class FoldersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FoldersPageCubit(),
+      create: (context) => injector<HomeCubit>(),
       child: Scaffold(
         floatingActionButton:
             IconButton(onPressed: () {}, icon: const Icon(Icons.abc)),
         appBar: AppBar(),
-        body: ListView.builder(itemBuilder: (context, index) {
-          return Container();
-        }),
+        body: BlocBuilder<HomeCubit, FoldersPageState>(
+          builder: (context, state) {
+            if (state is FoldersPageSuccessState) {
+              return ListView.builder(
+                  itemCount: state.folders.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      child: Text(state.folders[index].name),
+                    );
+                  });
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }
