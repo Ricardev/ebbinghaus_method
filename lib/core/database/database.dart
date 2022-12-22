@@ -113,9 +113,10 @@ class DatabaseApp extends IDatabaseApp {
 }
 
 enum DatabaseResult {
-  success(1),
-  fail(-1);
+  success(1, true),
+  fail(-1, false);
 
   final int resultValue;
-  const DatabaseResult(this.resultValue);
+  final bool tudoCerto;
+  const DatabaseResult(this.resultValue, this.tudoCerto);
 }

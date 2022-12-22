@@ -12,8 +12,32 @@ class FoldersPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => injector<HomeCubit>(),
       child: Scaffold(
-        floatingActionButton:
-            IconButton(onPressed: () {}, icon: const Icon(Icons.abc)),
+        floatingActionButton: IconButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: Text('Criar Baralho'),
+                        content: TextField(
+                          decoration: InputDecoration(hintText: ''),
+                        ),
+                        actions: [
+                          TextButton(
+                            child: Text('Cancelar'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: Text('OK'),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ));
+            },
+            icon: const Icon(
+              Icons.add,
+            )),
         appBar: AppBar(),
         body: BlocBuilder<HomeCubit, FoldersPageState>(
           builder: (context, state) {
@@ -32,4 +56,20 @@ class FoldersPage extends StatelessWidget {
       ),
     );
   }
+
+  // Widget _card(BuildContext context, int index) {
+  //   return GestureDetector(
+  //     child: Card(
+  //       child: Padding(
+  //         padding: EdgeInsets.all(10.0),
+  //         child: Row(children: <Widget>[
+  //           Container(
+  //             width: 80,
+  //             height: 40,
+  //           )
+  //         ]),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

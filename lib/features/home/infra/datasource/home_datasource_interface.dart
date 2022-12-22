@@ -4,4 +4,5 @@ import 'package:ebbinghaus_method/features/home/domain/entities/folder_entity.da
 abstract class HomeDataSourceInterface {
   Future<List<FolderEntity>> obterFolders();
   Future<List<CardEntity>> obterCards(int folderId);
+  Future<bool> postFolder(String nomedoFolder);
 }

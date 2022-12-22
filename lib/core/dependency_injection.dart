@@ -3,6 +3,7 @@ import 'package:ebbinghaus_method/cubits/home_cubit.dart';
 import 'package:ebbinghaus_method/features/home/domain/repository_interface/home_repository_interface.dart';
 import 'package:ebbinghaus_method/features/home/domain/usecases/get_card_usecase.dart';
 import 'package:ebbinghaus_method/features/home/domain/usecases/get_folders_usecase.dart';
+import 'package:ebbinghaus_method/features/home/domain/usecases/post_folder_usecase.dart';
 import 'package:ebbinghaus_method/features/home/infra/datasource/home_datasource.dart';
 import 'package:ebbinghaus_method/features/home/infra/datasource/home_datasource_interface.dart';
 import 'package:ebbinghaus_method/features/home/infra/repository/home_repository.dart';
@@ -19,6 +20,6 @@ void setup() {
 
   injector.registerFactory(() => GetFoldersUseCase(injector()));
   injector.registerFactory(() => GetCardUseCase(injector()));
-
-  injector.registerFactory(() => HomeCubit(injector(), injector()));
+  injector.registerFactory(() => PostFolderUseCase(injector()));
+  injector.registerFactory(() => HomeCubit(injector(), injector(), injector()));
 }

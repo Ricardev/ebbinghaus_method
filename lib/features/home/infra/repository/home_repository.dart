@@ -27,4 +27,14 @@ class HomeRepository extends HomeRepositoryInterface {
       return Left(Error());
     }
   }
+
+  @override
+  Future<Either<Error, bool>> postFolder(String folderName) async {
+    try {
+      final cards = await _homeDataSourceInterface.postFolder(folderName);
+      return Right(cards);
+    } catch (e) {
+      return Left(Error());
+    }
+  }
 }

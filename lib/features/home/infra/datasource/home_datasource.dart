@@ -23,4 +23,11 @@ class HomeDataSource extends HomeDataSourceInterface {
         where: "folderId = ?", whereArgs: [folderId]);
     return cards.map((card) => CardModel.fromDatabase(card)).toList();
   }
+
+  @override
+  Future<bool> postFolder(String nomedoFolder) async {
+    final success = await _databaseApp.insert(
+        TableNames.folderTable, [FolderModel(null, nomedoFolder).toJson()]);
+    return success.tudoCerto;
+  }
 }
