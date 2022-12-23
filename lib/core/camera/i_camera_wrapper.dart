@@ -12,4 +12,5 @@ abstract class ICamera {
   Future<Either<Exception, String>> stopVideo(String id);
   void disposeCamera();
   Future<String> getFileDirectory();
+  Future<File> cropImage(String filePath);
 }

@@ -44,7 +44,12 @@ class AddCardPage extends StatelessWidget {
                             hintText: "Resposta",
                             label: Text("Resposta"),
                             suffixIcon: GestureDetector(
-                                onTap: () {}, child: Icon(Icons.camera_alt))),
+                                onTap: () async {
+                                  respostaController.text = await context
+                                      .read<AddCardCubit>()
+                                      .scanearTexto("Resposta");
+                                },
+                                child: Icon(Icons.camera_alt))),
                       ),
                       SizedBox(
                         height: 50,

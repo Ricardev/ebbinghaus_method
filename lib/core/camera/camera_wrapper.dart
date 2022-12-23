@@ -3,6 +3,8 @@ import 'package:camera/camera.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -95,7 +97,8 @@ class Camera implements ICamera {
   Future<Either<Exception, File>> imagePickerCamera(String id) async {
     try {
       final rawImage = await _imagePicker.pickImage(source: ImageSource.camera);
-      final imageFile = File(rawImage!.path);
+      final imageCropped = await cropImage(rawImage!.path);
+      final imageFile = File(imageCropped.path);
       final applicationDirectory = await getFileDirectory();
       await imageFile.copy(formatToFilePath(applicationDirectory, id));
       return Right(imageFile);
@@ -103,6 +106,47 @@ class Camera implements ICamera {
       debugPrint(e.code);
       debugPrint(e.description);
       return Left(CameraException(e.code, e.description));
+    }
+  }
+
+  @override
+  Future<File> cropImage(String filePath) async {
+    try {
+      final croppedFile = await ImageCropper().cropImage(
+          sourcePath: filePath,
+          aspectRatioPresets: Platform.isAndroid
+              ? [
+                  CropAspectRatioPreset.square,
+                  CropAspectRatioPreset.ratio3x2,
+                  CropAspectRatioPreset.original,
+                  CropAspectRatioPreset.ratio4x3,
+                  CropAspectRatioPreset.ratio16x9
+                ]
+              : [
+                  CropAspectRatioPreset.original,
+                  CropAspectRatioPreset.square,
+                  CropAspectRatioPreset.ratio3x2,
+                  CropAspectRatioPreset.ratio4x3,
+                  CropAspectRatioPreset.ratio5x3,
+                  CropAspectRatioPreset.ratio5x4,
+                  CropAspectRatioPreset.ratio7x5,
+                  CropAspectRatioPreset.ratio16x9
+                ],
+          uiSettings: [
+            AndroidUiSettings(
+                toolbarTitle: 'Cropper',
+                toolbarColor: Colors.blueAccent,
+                toolbarWidgetColor: Colors.white,
+                initAspectRatio: CropAspectRatioPreset.original,
+                lockAspectRatio: false),
+            IOSUiSettings(
+              title: 'Cropper',
+            )
+          ]);
+      File croppedImage = File(croppedFile!.path);
+      return croppedImage;
+    } catch (e) {
+      throw CameraException("Error", "Erro ao fazer o crop da imagem");
     }
   }
 }
