@@ -2,6 +2,7 @@ import 'package:ebbinghaus_method/core/database/database_interface.dart';
 import 'package:ebbinghaus_method/core/database/scripts.dart';
 import 'package:ebbinghaus_method/features/home/domain/entities/folder_entity.dart';
 import 'package:ebbinghaus_method/features/home/domain/entities/card_entity.dart';
+import 'package:ebbinghaus_method/features/home/domain/usecases/post_card_usecase.dart';
 import 'package:ebbinghaus_method/features/home/infra/datasource/home_datasource_interface.dart';
 import 'package:ebbinghaus_method/features/home/infra/models/card_model.dart';
 import 'package:ebbinghaus_method/features/home/infra/models/folder_model.dart';
@@ -28,6 +29,13 @@ class HomeDataSource extends HomeDataSourceInterface {
   Future<bool> postFolder(String nomedoFolder) async {
     final success = await _databaseApp.insert(
         TableNames.folderTable, [FolderModel(null, nomedoFolder).toJson()]);
+    return success.tudoCerto;
+  }
+
+  @override
+  Future<bool> postCard(CardParams cardParams) async {
+    final success = await _databaseApp
+        .insert(TableNames.cardTable, [cardParams.toDatabase()]);
     return success.tudoCerto;
   }
 }

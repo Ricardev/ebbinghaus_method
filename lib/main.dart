@@ -1,9 +1,14 @@
+import 'package:ebbinghaus_method/core/database/database.dart';
 import 'package:ebbinghaus_method/core/dependency_injection.dart';
+import 'package:ebbinghaus_method/core/permissions.dart';
 import 'package:ebbinghaus_method/features/home/presentation/pages/folders_page.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
   setup();
+  WidgetsFlutterBinding.ensureInitialized();
+  await CameraPermissions.askCameraPermission();
+  await DatabaseApp.instance.dataBase;
   runApp(const MyApp());
 }
 
@@ -18,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const FoldersPage(),
+      home: FoldersPage(),
     );
   }
 }

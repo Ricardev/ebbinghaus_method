@@ -3,6 +3,7 @@ import 'package:camera/camera.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'camera_error.dart';
@@ -13,6 +14,7 @@ class Camera implements ICamera {
   late CameraController? cameraController;
 
   late List<CameraDescription> cameras;
+  final ImagePicker _imagePicker = ImagePicker();
 
   @override
   Future<void> inicializarCamera() async {
@@ -87,5 +89,20 @@ class Camera implements ICamera {
 
   String formatToFilePath(String filePath, String identification) {
     return '${filePath}_$identification';
+  }
+
+  @override
+  Future<Either<Exception, File>> imagePickerCamera(String id) async {
+    try {
+      final rawImage = await _imagePicker.pickImage(source: ImageSource.camera);
+      final imageFile = File(rawImage!.path);
+      final applicationDirectory = await getFileDirectory();
+      await imageFile.copy(formatToFilePath(applicationDirectory, id));
+      return Right(imageFile);
+    } on CameraException catch (e) {
+      debugPrint(e.code);
+      debugPrint(e.description);
+      return Left(CameraException(e.code, e.description));
+    }
   }
 }

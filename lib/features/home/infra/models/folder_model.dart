@@ -7,6 +7,6 @@ class FolderModel extends FolderEntity {
       <String, dynamic>{'id': id, 'nome': name, 'numeroCards': numeroCards};
 
   factory FolderModel.fromDatabase(Map<String, dynamic> map) {
-    return FolderModel(map['id'], map['name'], numeroCards: map['numeroCards']);
+    return FolderModel(map['id'], map['nome'], numeroCards: map['numeroCards']);
   }
 }

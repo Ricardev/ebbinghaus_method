@@ -7,6 +7,7 @@ abstract class ICamera {
   late CameraController? cameraController;
   Future<void> inicializarCamera();
   Future<Either<Exception, File>> tirarFoto(String id);
+  Future<Either<Exception, File>> imagePickerCamera(String id);
   Future<Either<Exception, bool>> gravarVideo();
   Future<Either<Exception, String>> stopVideo(String id);
   void disposeCamera();

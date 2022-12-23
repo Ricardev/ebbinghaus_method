@@ -10,8 +10,8 @@ class DatabaseApp extends IDatabaseApp {
 
   static Database? _database;
 
-  get dataBase async {
-    if (dataBase != null) return _database;
+  Future<Database> get dataBase async {
+    if (_database != null) return _database!;
     return await initDatabase();
   }
 
@@ -30,8 +30,9 @@ class DatabaseApp extends IDatabaseApp {
   Future<DatabaseResult> insert(
       String tabela, List<Map<String, dynamic>> objetos) async {
     try {
+      final db = await instance.dataBase;
       for (final objeto in objetos) {
-        await _database!.insert(tabela, objeto,
+        await db.insert(tabela, objeto,
             conflictAlgorithm: ConflictAlgorithm.replace);
       }
       return DatabaseResult.success;
@@ -47,15 +48,17 @@ class DatabaseApp extends IDatabaseApp {
   @override
   Future<List<Map<String, Object?>>> getAll(String tabela,
       {String? where, List<dynamic>? whereArgs, String? orderBy}) async {
-    final dadosDoBanco = await _database!
-        .query(tabela, where: where, whereArgs: whereArgs, orderBy: orderBy);
+    final db = await instance.dataBase;
+    final dadosDoBanco = await db.query(tabela,
+        where: where, whereArgs: whereArgs, orderBy: orderBy);
 
     return dadosDoBanco;
   }
 
   @override
   Future<List<Map<String, Object?>>> getAllRaw<T>(String query) async {
-    var dadosDoBanco = await _database!.rawQuery(query);
+    final db = await instance.dataBase;
+    var dadosDoBanco = await db.rawQuery(query);
 
     return dadosDoBanco;
   }
@@ -65,7 +68,8 @@ class DatabaseApp extends IDatabaseApp {
       String tabela, Map<String, Object?> objeto, dynamic id,
       {String column = 'insercaoId'}) async {
     try {
-      await _database!.update(
+      final db = await instance.dataBase;
+      await db.update(
         tabela,
         objeto,
         where: '$column = ?',
